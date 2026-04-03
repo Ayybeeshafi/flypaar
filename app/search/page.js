@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 import AirportSelect from '@/components/AirportSelect'
 import airports from '@/data/airports.json'
 import Link from 'next/link'
@@ -12,30 +11,36 @@ function getAirportCity(code) {
 }
 
 export default function SearchTrips() {
-  const searchParams = useSearchParams()
-  const [from, setFrom] = useState(searchParams.get('from') || '')
-  const [to, setTo] = useState(searchParams.get('to') || '')
-  const [date, setDate] = useState(searchParams.get('date') || '')
-  const [role, setRole] = useState(searchParams.get('role') || '')
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
+  const [date, setDate] = useState('')
+  const [role, setRole] = useState('')
   const [trips, setTrips] = useState([])
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
-
-  // Auto-search if URL has params
-  useEffect(() => {
-    if (searchParams.get('from') || searchParams.get('to') || searchParams.get('date')) {
-      handleSearch()
-    }
-  }, [])
+  const [error, setError] = useState('')
 
   async function handleSearch(e) {
-    if (e) e.preventDefault()
+    e.preventDefault()
+    setError('')
+
+    // Validate from and to are selected
+    if (!from || !to) {
+      setError('Please select both departure and arrival airports.')
+      return
+    }
+
+    if (from === to) {
+      setError('Departure and arrival airports must be different.')
+      return
+    }
+
     setLoading(true)
     setSearched(true)
 
     const params = new URLSearchParams()
-    if (from) params.append('from', from)
-    if (to) params.append('to', to)
+    params.append('from', from)
+    params.append('to', to)
     if (date) params.append('date', date)
     if (role) params.append('role', role)
 
@@ -57,6 +62,7 @@ export default function SearchTrips() {
     setRole('')
     setTrips([])
     setSearched(false)
+    setError('')
   }
 
   return (
@@ -64,29 +70,36 @@ export default function SearchTrips() {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-black">Find Travel Companions</h1>
         <p className="text-[#393E46] mt-2">
-          Search for travelers on your route and date
+          Search for travelers on your route
         </p>
       </div>
 
       {/* Search Form */}
       <form onSubmit={handleSearch} className="bg-[#AEC8A4] p-6 rounded-xl shadow-sm mb-8">
+
+        {error && (
+          <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm border border-red-200 mb-4">
+            {error}
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-sm font-medium text-black mb-1">From</label>
+            <label className="block text-sm font-medium text-black mb-1">From *</label>
             <AirportSelect
               name="from"
               value={from}
               onChange={setFrom}
-              placeholder="Any departure"
+              placeholder="Departure airport"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-black mb-1">To</label>
+            <label className="block text-sm font-medium text-black mb-1">To *</label>
             <AirportSelect
               name="to"
               value={to}
               onChange={setTo}
-              placeholder="Any arrival"
+              placeholder="Arrival airport"
             />
           </div>
         </div>
@@ -141,19 +154,23 @@ export default function SearchTrips() {
         <div>
           <p className="text-sm text-[#393E46] mb-4">
             {trips.length} trip{trips.length !== 1 ? 's' : ''} found
+            {' '}for <strong>{getAirportCity(from)}</strong> → <strong>{getAirportCity(to)}</strong>
+            {date && ` on ${new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`}
           </p>
 
           {trips.length === 0 ? (
             <div className="bg-[#E7EFC7] p-12 rounded-xl text-center">
               <div className="text-4xl mb-3">🔍</div>
-              <p className="text-black/70 mb-2">No trips found matching your search.</p>
-              <p className="text-sm text-black/50">Try broadening your search or check back later.</p>
+              <p className="text-black/70 mb-2">No trips found for this route.</p>
+              <p className="text-sm text-black/50 mb-4">
+                Try removing the date filter or check back later.
+              </p>
               <Link
                 href="/post"
-                className="inline-block mt-4 bg-[#3B3B1A] text-white px-6 py-2 rounded-lg text-sm
+                className="inline-block bg-[#3B3B1A] text-white px-6 py-2 rounded-lg text-sm
                            hover:bg-[#222831] transition"
               >
-                Post your own trip
+                Post your own trip for this route
               </Link>
             </div>
           ) : (
@@ -225,18 +242,11 @@ export default function SearchTrips() {
         </div>
       )}
 
-      {/* Show all trips on first load */}
+      {/* Initial state — no search yet */}
       {!searched && (
         <div className="bg-[#E7EFC7] p-12 rounded-xl text-center">
-          <div className="text-4xl mb-3">✈️</div>
-          <p className="text-black/70">Search for trips above, or browse all upcoming trips.</p>
-          <button
-            onClick={handleSearch}
-            className="inline-block mt-4 bg-[#3B3B1A] text-white px-6 py-2 rounded-lg text-sm
-                       hover:bg-[#222831] transition"
-          >
-            Show All Upcoming Trips
-          </button>
+          <div className="text-4xl mb-3"></div>
+          <p className="text-black/70">Select departure and arrival airports to find companions on your route.</p>
         </div>
       )}
     </div>
