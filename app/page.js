@@ -101,7 +101,7 @@ export default function Home() {
             </div>
             <div className="bg-[#AEC8A4] p-8 rounded-xl">
               <h3 className="text-xl font-semibold text-black mb-3">
-                First-Time Students
+                First-Time Aborad
               </h3>
               <p className="text-black/70 text-sm">
                 Heading abroad for university for the first time? Connect with an

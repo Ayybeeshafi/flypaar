@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
               <strong>FlyPaar</strong> — Connecting travelers with care.
               {' '}
               <a
-                href="https://github.com"
+                href="https://github.com/Ayybeeshafi/flypaar"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#948979] hover:text-black underline"
