@@ -1,4 +1,4 @@
-# ✈️ FlyPaar
+#  FlyPaar
 
 Find trusted travel companions for elderly parents and first-time student travelers.
 
