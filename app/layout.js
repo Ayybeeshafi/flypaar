@@ -2,7 +2,25 @@ import './globals.css'
 
 export const metadata = {
   title: 'FlyPaar - Find Travel Companions for Your Loved Ones',
-  description: 'Connect elderly parents and first-time travelers with trusted companions on the same flight.',
+  description: 'Connect elderly parents and first-time travelers with trusted companions on the same flight. Free, open source, privacy first.',
+  metadataBase: new URL('https://flypaar.com'),
+  openGraph: {
+    title: 'FlyPaar - Never Let Them Fly Alone',
+    description: 'Find trusted travel companions for your elderly parents or first-time student travelers on the same flight.',
+    url: 'https://flypaar.com',
+    siteName: 'FlyPaar',
+    type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FlyPaar - Never Let Them Fly Alone',
+    description: 'Find trusted travel companions for your elderly parents or first-time student travelers on the same flight.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({ children }) {

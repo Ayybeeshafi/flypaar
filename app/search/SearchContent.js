@@ -237,7 +237,7 @@ export default function SearchContent() {
 
       {!searched && (
         <div className="bg-[#E7EFC7] p-12 rounded-xl text-center">
-          <div className="text-4xl mb-3">✈️</div>
+          <div className="text-4xl mb-3"></div>
           <p className="text-black/70">Select departure and arrival airports to find companions on your route.</p>
         </div>
       )}

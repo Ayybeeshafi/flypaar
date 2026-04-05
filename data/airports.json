@@ -212,6 +212,13 @@
     "country": "France"
   },
   {
+    "code": "HAJ",
+    "city": "Hannover",
+    "name": "Hannover Airport",
+    "country": "Germany"
+  },
+
+  {
     "code": "FRA",
     "city": "Frankfurt",
     "name": "Frankfurt Airport",
@@ -251,6 +258,12 @@
     "code": "STR",
     "city": "Stuttgart",
     "name": "Stuttgart Airport",
+    "country": "Germany"
+  },
+  {
+    "code": "BRE",
+    "city": "Bremen",
+    "name": "Bremen Airport",
     "country": "Germany"
   },
   {
